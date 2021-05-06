@@ -14,6 +14,6 @@ class RecycleSeeder extends Seeder
      */
     public function run()
     {
-        Recycle::factory(10)->create();
+        Recycle::factory(20)->create();
     }
 }

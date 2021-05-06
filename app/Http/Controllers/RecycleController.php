@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RecycleResource;
 use App\Models\Recycle;
 use Illuminate\Http\Request;
 
-class ApiRecycleController extends Controller
+class RecycleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class ApiRecycleController extends Controller
      */
     public function index()
     {
-       $recycles = Recycle::all();
-       return $recycles;
+            $recycles = Recycle::all();
+            return RecycleResource::collection($recycles);
     }
 
     /**
@@ -36,8 +37,16 @@ class ApiRecycleController extends Controller
      */
     public function store(Request $request)
     {
+        $recyle = new Recycle();
 
-        echo($request);
+        $recyle->week_day = $request->week_day;
+        $recyle->startTime = $request->startTime;
+        $recyle->endTime = $request->endTime;
+        $recyle->type = $request->type;
+
+        $recyle->save();
+
+        return new RecycleResource($recyle);
     }
 
     /**

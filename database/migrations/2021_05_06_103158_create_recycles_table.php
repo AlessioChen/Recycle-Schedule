@@ -15,7 +15,7 @@ class CreateRecyclesTable extends Migration
     {
         Schema::create('recycles', function (Blueprint $table) {
             $table->id();
-            $table->string('week_day');
+            $table->integer('week_day');
             $table->integer('startTime');
             $table->integer('endTime');
             $table->string('type');

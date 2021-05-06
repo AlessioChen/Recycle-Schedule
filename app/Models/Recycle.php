@@ -9,16 +9,8 @@ class Recycle extends Model
 {
     use HasFactory;
 
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'weekDay',
-        'startTime',
-        'endTime',
-        'type'
-    ];
+    protected $table ='recycles';
+
+    protected $fillable =["week_day" , "startTime", "endTime", "type"];
+
 }
