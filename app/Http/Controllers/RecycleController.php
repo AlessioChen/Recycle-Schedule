@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RecycleResource;
 use App\Models\Recycle;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RecycleController extends Controller
 {
@@ -15,8 +17,8 @@ class RecycleController extends Controller
      */
     public function index()
     {
-            $recycles = Recycle::all();
-            return RecycleResource::collection($recycles);
+        $recycles = Recycle::all();
+        return RecycleResource::collection($recycles);
     }
 
     /**
@@ -39,12 +41,19 @@ class RecycleController extends Controller
     {
         $recyle = new Recycle();
 
-        $recyle->week_day = $request->week_day;
+        if (!$this->requestValid($request)) {
+            return response()->json([
+                'error' => 'Input data not valid'
+            ]);
+        }
+
+        $recyle->weekDay = $request->weekDay;
         $recyle->startTime = $request->startTime;
         $recyle->endTime = $request->endTime;
         $recyle->type = $request->type;
 
         $recyle->save();
+
 
         return new RecycleResource($recyle);
     }
@@ -57,7 +66,8 @@ class RecycleController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = Recycle::findOrFail($id);
+        return new RecycleResource($item);
     }
 
     /**
@@ -80,7 +90,21 @@ class RecycleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = Recycle::findOrFail($id);
+
+        if (!$this->requestValid($item)) {
+            return response()->json([
+                'error' => 'Input data not valid'
+            ]);
+        }
+
+        $item->weekDay = $request->weekDay;
+        $item->startTime = $request->startTime;
+        $item->endTime = $request->endTime;
+        $item->type = $request->type;
+
+        $item->save();
+        return new RecycleResource($item);
     }
 
     /**
@@ -91,6 +115,52 @@ class RecycleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Recycle::findOrFail($id);
+
+        $item->delete();
+
+        return new RecycleResource($item);
+    }
+
+
+    //return the todays recyles schedule
+    public function today()
+    {
+        $recycles = Recycle::all();
+        $response = [];
+
+        $date = new DateTime();
+        $weekDay = $date->format('N');
+
+        foreach ($recycles as $item) {
+            if ($item->weekDay == $weekDay)
+                array_push($response, $item);
+        }
+
+        return RecycleResource::collection($response);
+    }
+
+    private function requestValid($request): bool
+    {
+        $rules = array(
+            "weekDay" => "required|numeric",
+            "startTime" => "required|numeric",
+            "endTime" => "required|numeric",
+            "type" => "required|string"
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+
+        if ($validator->fails())
+            return false;
+
+        if ($request->startTime >= $request->endTime)
+            return false;
+
+        if ($request->weekDay > 7 || $request->weekDay < 0)
+            return false;
+
+        return true;
     }
 }

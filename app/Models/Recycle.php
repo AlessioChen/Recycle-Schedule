@@ -11,6 +11,6 @@ class Recycle extends Model
 
     protected $table ='recycles';
 
-    protected $fillable =["week_day" , "startTime", "endTime", "type"];
+    protected $fillable =["weekDay" , "startTime", "endTime", "type"];
 
 }

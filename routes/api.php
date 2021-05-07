@@ -19,6 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('recycles', RecycleController::class);
 
-// Route::get('/recycles', RecycleController::class, 'index');
+
+Route::get('recycles/today/', [RecycleController::class, 'today']);
+
+//  This command makes all the CRUD routes as explained on https://laravel.com/docs/5.2/controllers
+ Route::resource('recycles',RecycleController::class);
+
+
+
