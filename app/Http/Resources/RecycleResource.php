@@ -30,6 +30,7 @@ class RecycleResource extends JsonResource
             'weedDay' => $this->weekDay,
             'startTime' => $this->startTime,
             'endTime' => $this->endTime,
+            'type'=>$this->type,
         ];
         // return parent::toArray($request);
     }
