@@ -1,4 +1,4 @@
-## PHP project - API for separate collection
+## PHP project - API for separate recycling schedule
 The project is build in Laravel, a PHP framework, as a project for the start2impact PHP SuperGuide. The implemented CURD operations are:
 
  1. GET-> http://still-wave-26258.herokuapp.com/api/recycles  for table all rows. 
