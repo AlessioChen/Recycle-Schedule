@@ -92,11 +92,6 @@ class RecycleController extends Controller
     {
         $item = Recycle::findOrFail($id);
 
-        if (!$this->requestValid($item)) {
-            return response()->json([
-                'error' => 'Input data not valid'
-            ]);
-        }
 
         $item->weekDay = $request->weekDay;
         $item->startTime = $request->startTime;
